@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Pacientes</title>
+		<!-- chama o codigo java scripts do calendario pra traduzir -->
+		<h:outputScript library="js" name="scripts.js" />
+	</h:head>
+	<ui:define name="conteudo">
+
+		<h:form id="formListagem">
+
+			<p:panel header="Lista de Pacientes">
+				<p:dataTable id="tabela" emptyMessage="Lista sem registro"
+					paginator="true" value="#{pacienteBean.pacientes}" var="paciente"
+					rows="5" paginatorPosition="top">
+					<f:facet name="header">
+						<p:commandButton value="Novo"
+							actionListener="#{pacienteBean.novo}"
+							oncomplete="PF('dlgPaci').show();"
+							update=":mensagem :formcad:painel">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+					</f:facet>
+
+					<p:column headerText="Registro" width="83">
+						<h:outputText value="#{paciente.registro}" />
+					</p:column>
+
+					<p:column headerText="Nome" sortBy="#{paciente.pessoa.nome}"
+						filterBy="#{paciente.pessoa.nome}">
+						<h:outputText value="#{paciente.pessoa.nome}" />
+					</p:column>
+
+					<p:column headerText="Data de Nascimento" width="85">
+						<h:outputText value="#{paciente.dataNacimento}">
+							<f:convertDateTime locale="pt_BR" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Data de Admissão" width="89">
+						<h:outputText value="#{paciente.dataAdmissao}">
+							<f:convertDateTime locale="pt_BR" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Internado" width="75">
+						<h:outputText value="#{paciente.internadoFormatado}" />
+					</p:column>
+
+					<p:column headerText="Clinica"
+						sortBy="#{paciente.enfermaria.clinica.nome}"
+						filterBy="#{paciente.enfermaria.clinica.nome}">
+						<h:outputText value="#{paciente.enfermaria.clinica.nome}" />
+					</p:column>
+
+					<p:column headerText="Enfermaira">
+						<h:outputText value="#{paciente.enfermaria.numero}" />
+					</p:column>
+					
+					<p:column headerText="Leito">
+						<h:outputText value="#{paciente.leito}" />
+					</p:column>
+					
+					<p:column headerText="Idade"> 
+ 						<h:outputText value="#{paciente.idade}" /> 
+ 					</p:column> 
+					
+					
+
+					<p:column headerText="Refeicão para acompanhente" width="85">
+						<h:outputText value="#{paciente.acompanhateFormatado}"
+							disabled="true" />
+
+					</p:column>
+
+					<p:column headerText="Opções" width="70">
+						<p:commandButton icon="ui-icon-trash"
+							actionListener="#{pacienteBean.excluir}" title="EXCLUIR"
+							update=":mensagem :formListagem:tabela">
+							<p:confirm header="Confirmação"
+								message="Tem certeza que deseja excluir?" icon="ui-icon-alert" />
+							<!-- a lina a baixo serve para enformar qual linha estou selecionado para a exclusao -->
+							<f:attribute name="pacienteSelecionado" value="#{paciente}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-pencil"
+							actionListener="#{pacienteBean.editar}" title="EDITAR"
+							update=":mensagem :formcad:painel"
+							oncomplete="PF('dlgPaci').show();">
+							<!-- a lina a baixo serve para enformar qual linha estou selecionado para a edição -->
+							<f:attribute name="pacienteSelecionado" value="#{paciente}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+
+					</p:column>
+				</p:dataTable>
+				<p:confirmDialog global="true">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+			</p:panel>
+		</h:form>
+
+		<p:dialog header="Cadastrar Pacientes" widgetVar="dlgPaci"
+			resizable="false" modal="true" closable="false">
+			<h:form id="formcad">
+				<h:panelGrid id="painel" columns="2">
+
+					<p:outputLabel for="rgs" value="Registro:" />
+					<p:inputText id="rgs" filter="true" required="true"
+						requiredMessage="O campo 'Registro' é obrigatório"
+						value="#{pacienteBean.paciente.registro}" size="19" maxlength="19" />
+
+					<p:outputLabel for="pessoa" value="Pessoa:" />
+					<p:selectOneMenu id="pessoa" filter="true"
+						value="#{pacienteBean.paciente.pessoa}" required="true"
+						requiredMessage="O campo 'Pessoa' é obrigatório"
+						converter="omnifaces.SelectItemsConverter">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma pessoa" />
+						<f:selectItems value="#{pacienteBean.pessoas}" var="pessoa"
+							itemValue="#{pessoa}" itemLabel="#{pessoa.nome} - #{pessoa.cpf}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="dataN" value="Data de nascimento:" />
+					<p:calendar id="dataN"
+						value="#{pacienteBean.paciente.dataNacimento}" required="true"
+						requiredMessage="O campo 'Data de nascimento:' é obirgatório"
+						size="10" maxlength="10" locale="pt_BR" />
+						
+					<p:outputLabel for="data" value="Data de admição:" />
+					<p:calendar id="data" value="#{pacienteBean.paciente.dataAdmissao}"
+						required="true"
+						requiredMessage="O campo 'Data de admissão:' é obirgatório"
+						size="10" maxlength="10" locale="pt_BR" />
+
+					<p:outputLabel for="intern" value="Status:" />
+					<p:selectBooleanCheckbox id="intern"
+						value="#{pacienteBean.paciente.internado}" required="true"
+						requiredMessage="O campo 'Status' é obrigatório" />
+
+					<p:outputLabel for="acomp" value="Acopamhante:" />
+					<p:selectBooleanCheckbox id="acomp"
+						value="#{pacienteBean.paciente.acompanhate}" required="true"
+						requiredMessage="O campo 'Acopamhante' é obrigatório" />
+
+					<p:outputLabel for="clinica" value="Clinicas:" />
+					<p:selectOneMenu id="clinica" filter="true"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{pacienteBean.clinica}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma clinica" />
+						<f:selectItems value="#{pacienteBean.clinicas}" var="clinica"
+							itemValue="#{clinica}" itemLabel="#{clinica.nome}" />
+						<p:ajax listener="#{pacienteBean.popular}"
+							update=":formcad:enfermaria" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="enfermaria" value="enfermaria:" />
+					<p:selectOneMenu id="enfermaria" filter="true" required="true"
+						requiredMessage="O campo 'Enfermaria' é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{pacienteBean.paciente.enfermaria}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma enfermaria" />
+						<f:selectItems value="#{pacienteBean.enfermarias}"
+							var="enfermaria" itemValue="#{enfermaria}"
+							itemLabel="#{enfermaria.numero}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="leito" value="Leito:" />
+					<p:inputText id="leito" filter="true" required="true"
+						requiredMessage="O campo 'Leito' é obrigatório"
+						value="#{pacienteBean.paciente.leito}" size="5" maxlength="5" />
+
+					<p:outputLabel for="obs" value="Observação:" />
+					<p:inputText id="obs" filter="true" required="true"
+						requiredMessage="O campo 'Observação' é obrigatório"
+						value="#{pacienteBean.paciente.observacao}" size="50"
+						maxlength="150" />
+
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+
+					<p:commandButton value="Salvar"
+						actionListener="#{pacienteBean.salvar}"
+						update=":mensagem :formcad:painel :formListagem:tabela" />
+					<p:commandButton value="Fechar" oncomplete="PF(`dlgPaci`).hide();" />
+				</h:panelGrid>
+			</h:form>
+
+		</p:dialog>
+	</ui:define>
+</ui:composition>

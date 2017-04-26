@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Enfermarias</title>
+</h:head>
+<ui:define name="conteudo">
+	
+	<h:form id="formListagem">
+
+		<p:panel header="Lista de Enfermarias">
+			<p:dataTable id="tabela" emptyMessage="Lista sem registro"
+				paginator="true" value="#{enfermariaBean.enfermarias}" var="enfermaria" rows="5" paginatorPosition="top">
+				<f:facet name="header">
+					<p:commandButton value="Novo" oncomplete="PF('dlgEnf').show();"
+						actionListener="#{enfermariaBean.novo}" update=":mensagem :formcad:painel">
+						<!-- para tornar os campo valido do dialogo sempre que o botao novo for usado -->
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
+				</f:facet>
+				<p:column headerText="Enfermaria" sortBy="#{enfermaria.numero}"
+					filterBy="#{enfermaria.numero}">
+					<h:outputText value="#{enfermaria.numero}" />
+				</p:column>
+
+				<p:column headerText="Clinica" sortBy="#{enfermaria.clinica.nome}"
+					filterBy="#{enfermaria.clinica.nome}">
+					<h:outputText value="#{enfermaria.clinica.nome}" />
+				</p:column>
+
+				<p:column headerText="Opções" style="width:150px">
+					<p:commandButton icon="ui-icon-trash"
+						actionListener="#{enfermariaBean.excluir}"
+						update="mensagem :formListagem:tabela">
+						<p:confirm header="Confirmação"
+							message="Tem certeza que deseja excluir?" icon="ui-icon-alert" />
+						<f:attribute name="enfermariaSelecionada" value="#{enfermaria}" />
+					</p:commandButton>
+
+					<p:commandButton icon="ui-icon-pencil"
+						actionListener="#{enfermariaBean.editar}"
+						update=":mensagem :formcad:painel"
+						oncomplete="PF('dlgEnf').show();">
+						<f:attribute name="enfermariaSelecionada" value="#{enfermaria}" />
+						<!-- para tornar os campo valido do dialogo sempre que o botao excluir for usado -->
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+			<p:confirmDialog global="true">
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+
+			</p:confirmDialog>
+		</p:panel>
+	</h:form>
+
+	<p:dialog header="Cadastrar Enfermarias" widgetVar="dlgEnf"
+		draggable="false" resizable="false" modal="true">
+		<h:form id="formcad">
+			<h:panelGrid id="painel" columns="2">
+				<p:outputLabel for="nome" value="Enfermarias:" />
+				<p:inputText id="nome" maxlength="4" size="4"
+					value="#{enfermariaBean.enfermaria.numero}" required="true"
+					requiredMessage="O campo 'Enfermaria' é obrigatorio" />
+
+				<p:outputLabel for="clinica" value="Clinicas:" />
+				<p:selectOneMenu id="clinica" filter="true"
+					value="#{enfermariaBean.enfermaria.clinica}"
+					converter="omnifaces.SelectItemsConverter" required="true"
+					requiredMessage="O campo 'Clinica' é obrigatorio">
+					<f:selectItem noSelectionOption="true"
+						itemLabel="Selecione uma clinica" />
+					<f:selectItems value="#{enfermariaBean.clinicas}" var="clinica"
+						itemValue="#{clinica}" itemLabel="#{clinica.nome}" />
+
+				</p:selectOneMenu>
+			</h:panelGrid>
+			<h:panelGrid columns="2">
+
+				<p:commandButton value="Salvar"
+					actionListener="#{enfermariaBean.salvar}"
+					update=":mensagem :formcad:painel :formListagem:tabela" />
+				<p:commandButton value="Fechar" oncomplete="PF(`dlgEnf`).hide();" />
+			</h:panelGrid>
+		</h:form>
+
+	</p:dialog>
+</ui:define>
+</ui:composition>

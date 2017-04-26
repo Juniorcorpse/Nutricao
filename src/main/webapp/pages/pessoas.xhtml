@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Pessoas</title>
+</h:head>
+<ui:define name="conteudo">
+	
+	<h:form id="formlistagem">
+		<p:panel header="Lista de Pessoas">
+			<p:dataTable id="tabela" emptyMessage="Lista sem registros"
+				paginator="true" value="#{pessoaBean.pessoas}" var="pessoa" rows="5" paginatorPosition="top">
+				<f:facet name="header">
+					<p:commandButton value="Novo" actionListener="#{pessoaBean.novo}"
+						oncomplete="PF('dlgPess').show();"
+						update=":mensagem :formcad:painel">
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
+				</f:facet>
+				<p:column headerText="Nome" sortBy="#{pessoa.nome}"
+					filterBy="#{pessoa.nome}">
+					<h:outputText value="#{pessoa.nome}" />
+				</p:column>
+
+				<p:column headerText="CPF" sortBy="#{pessoa.cpf}"
+					filterBy="#{pessoa.cpf}">
+					<h:outputText value="#{pessoa.cpf}" />
+				</p:column>
+
+				<p:column headerText="Opções">
+					<p:commandButton icon="ui-icon-trash" title="EXCLUIR"
+						actionListener="#{pessoaBean.excluir}"
+						update=":mensagem :formlistagem:tabela">
+						<p:confirm header="Confirmação"
+							message="Tem certeza que deseja excluir?" icon="ui-icon-alert" />
+						<f:attribute name="pessoaSelecionada" value="#{pessoa}" />
+						<!-- para tornar os campo valido do dialogo sempre que o botao excluir for usado -->
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+
+					</p:commandButton>
+
+					<p:commandButton icon="ui-icon-pencil" title="EDITAR"
+						actionListener="#{pessoaBean.editar}"
+						update=":mensagem :formcad:painel"
+						oncomplete="PF('dlgPess').show();">
+						<f:attribute name="pessoaSelecionada" value="#{pessoa}" />
+						<!-- para tornar os campo valido do dialogo sempre que o botao excluir for usado -->
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
+
+				</p:column>
+
+			</p:dataTable>
+			<p:confirmDialog global="true">
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+		</p:panel>
+	</h:form>
+	<p:dialog header="Cadastrar Pessoas" widgetVar="dlgPess"
+		draggable="false" resizable="false" modal="true">
+		<h:form id="formcad">
+			<h:panelGrid id="painel" columns="2">
+
+				<p:outputLabel for="nome" value="Nome" />
+				<p:inputText id="nome" maxlength="50" size="30"
+					value="#{pessoaBean.pessoa.nome}" required="true"
+					requiredMessage="O campo 'Nome' é obrigatório" />
+
+				<p:outputLabel for="cpf" value="CPF" />
+				<p:inputMask id="cpf" mask="999.999.999-99" size="12"
+					value="#{pessoaBean.pessoa.cpf}" required="true"
+					requiredMessage="O campo 'CPF' é obrigatório" />
+
+				<p:commandButton value="Salvar"
+					actionListener="#{pessoaBean.salvar}"
+					update=":mensagem :formcad:painel :formlistagem:tabela">
+					
+				</p:commandButton>
+				<p:commandButton value="Fechar" oncomplete="PF('dlgPess').hide();"/>
+
+
+
+			</h:panelGrid>
+		</h:form>
+
+	</p:dialog>
+</ui:define>
+</ui:composition>

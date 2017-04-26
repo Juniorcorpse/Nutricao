@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>SisNutriD</title>
+	<h:outputStylesheet library="css" name="estilos.css" />
+</h:head>
+<h:body>
+	<!-- pra esibir mensagens -->
+	<p:growl id="mensagem" />
+
+	<div id="geral">
+		<div id="topo" class="divTopo" >
+		<h:form id="formimg" >
+			<p:graphicImage library="images" name="nutrissfun.jpg"
+				styleClass="imagemCentralizada" />
+					
+				<center><h1>Sistema de Nutrição e Dieta Hospitalar</h1></center>
+				
+		</h:form>
+		</div>
+
+		<div id="cabecalho" class="divCabecalho">
+			<h:form id="formMenu" >
+				<p:menubar>
+					<p:submenu label="Aquivo">
+						<p:menuitem value="Sair" />
+					</p:submenu>
+
+					<p:submenu label="Cadastros">
+						<p:menuitem value="Clínica" url="/pages/clinicas.xhtml"/>
+						<p:menuitem value="Enfermaria" url="/pages/enfermarias.xhtml" />
+						<p:menuitem value="Pessoa" url="/pages/pessoas.xhtml"/>
+						<p:menuitem value="Dieta" url="/pages/dietas.xhtml"/>
+						<p:menuitem value="Cardápio" url="/pages/cardapios.xhtml"/>
+						<p:menuitem value="Paciente" url="/pages/pacientes.xhtml"/>
+						<p:menuitem value="Funcionário" url="/pages/funcionario.xhtml"/>
+						<p:menuitem value="Usuários" url="/pages/usuarios.xhtml"/>
+					</p:submenu>
+
+					<p:submenu label="Administração de Dietas">
+						<p:menuitem value="Pedido" url="/pages/pedidos.xhtml"/>
+						<p:menuitem value="Pedidos do dia" url="/pages/pedidosdodia.xhtml"/>
+					</p:submenu>
+
+					<p:submenu label="Ajuda">
+						<p:menuitem value="Sobre" />
+					</p:submenu>
+				</p:menubar>
+			</h:form>
+		</div>
+
+		<div id="conteudo">
+			<ui:insert name="conteudo"  />
+		</div>
+	</div>
+
+</h:body>
+</html>

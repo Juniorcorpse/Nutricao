@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Pedidos</title>
+	</h:head>
+	<ui:define name="conteudo">
+
+		<h:form id="formCardapio">
+
+<!-- 			<p:panel header="Cardápios"> -->
+<!-- 				<p:dataTable id="tabelaCard" emptyMessage="Lista sem registro" -->
+<!-- 					paginator="true" value="#{pedidoBean.cardapios}" var="cardapio" -->
+<!-- 					rows="3" paginatorPosition="bottom"> -->
+
+<!-- 					<p:column headerText="Descrição" sortBy="#{cardapio.descricao}" -->
+<!-- 						filterBy="#{cardapio.descricao}"> -->
+<!-- 						<h:outputText value="#{cardapio.descricao}" /> -->
+<!-- 					</p:column> -->
+					
+<!-- 				</p:dataTable> -->
+
+<!-- 			</p:panel> -->
+			<p:panel header="Dieta">
+				<p:dataTable id="tabelaDiet" emptyMessage="Lista sem registro"
+					paginator="true" value="#{pedidoBean.dietas}" var="dieta"
+					rows="3" paginatorPosition="bottom">
+
+					<p:column headerText="Descrição" sortBy="#{dieta.descricao}"
+						filterBy="#{dieta.descricao}">
+						<h:outputText value="#{dieta.descricao}" />
+					</p:column>
+
+					<p:column headerText="Opções">
+						<p:commandButton icon="ui-icon-plus"
+							actionListener="#{pedidoBean.adicionar}"
+							update=":formCardapio:tabelaCesta :formCardapio:painelFinalizacao">
+							<f:attribute name="dietaSelecionada" value="#{dieta}" />
+						</p:commandButton>
+
+
+
+					</p:column>
+				</p:dataTable>
+
+			</p:panel>
+			<p:panel header="Administracão da Dieta">
+
+				<p:dataTable id="tabelaCesta" emptyMessage="Lista sem registro"
+					paginator="true" value="#{pedidoBean.itensPedido}"
+					var="itensPedido" rows="4" paginatorPosition="bottom">
+
+					<p:column headerText="Descrição"
+						sortBy="#{itensPedido.dieta.descricao}">
+						<h:outputText value= "#{itensPedido.dieta.descricao}" />
+					</p:column>
+
+					<p:column headerText="Quant.">
+						<h:outputText value="#{itensPedido.quantidade}" />
+					</p:column>
+
+					<p:column headerText="Opções">
+						<p:commandButton icon="ui-icon-minus"
+							actionListener="#{pedidoBean.excluir}"
+							update=":formCardapio:tabelaCesta :formCardapio:painelFinalizacao">
+							<f:attribute name="itemSelecionado" value="#{itensPedido}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+
+			<p:panel header="Filalização">
+				<h:panelGrid id="painelFinalizacao" columns="3">
+					<p:outputLabel value="Total de dietas no esquema:" />
+					<h:outputText value="#{pedidoBean.pedido.quantidadeTotal}">
+						
+					</h:outputText>
+
+					<p:commandButton value="Finalizar"
+						actionListener="#{pedidoBean.finalizar}"
+						update=":mensagem :formFinalizar:painelFinalizar"
+						oncomplete="PF('dlgPedi').show();">
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
+				</h:panelGrid>
+			</p:panel>
+		</h:form>
+
+		<p:dialog header="Finalizar Vendas" widgetVar="dlgPedi"
+			draggable="false" resizable="false" modal="true" closeOnEscape="true">
+			<h:form id="formFinalizar">
+				<h:panelGrid id="painelFinalizar" columns="2">
+					<p:outputLabel value="Horário: " />
+					<h:outputText value="#{pedidoBean.pedido.horario}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" locale="pt_BR"
+							timeZone="America/Belem" />
+					</h:outputText>
+					<p:outputLabel value="Total:" />
+					<h:outputText value="#{pedidoBean.pedido.quantidadeTotal}">
+						<f:convertNumber locale="pt_BR" />
+					</h:outputText>
+
+					<p:outputLabel for="func" value="Funcionario:" />
+					<p:selectOneMenu id="func" value="#{pedidoBean.pedido.funcionario}"
+						converter="omnifaces.SelectItemsConverter" filter="true"
+						filterMatchMode="contains" required="true"
+						requiredMessage="O campo Funcionario é obrigatório">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um funcionario" />
+						<f:selectItems value="#{pedidoBean.funcionarios}" var="fucionario"
+							itemValue="#{fucionario}"
+							itemLabel="#{fucionario.pessoa.cpf} - #{fucionario.pessoa.nome}" />
+
+					</p:selectOneMenu>
+
+					<p:outputLabel for="paci" value="Paciente:" />
+					<p:selectOneMenu id="paci" value="#{pedidoBean.pedido.paciente}"
+						converter="omnifaces.SelectItemsConverter" filter="true"
+						filterMatchMode="contains" required="true"
+						requiredMessage="O campo Paciente é obrigatório">
+						<f:selectItem onSelectionOption="true"
+							itemLabel="Selecione um Paciente" />
+						<f:selectItems value="#{pedidoBean.pacientes}" var="paciente"
+							itemValue="#{paciente}"
+							itemLabel="#{paciente.pessoa.cpf} - #{paciente.pessoa.nome}" />
+
+					</p:selectOneMenu>
+
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+
+					<p:commandButton value="Salvar"
+						actionListener="#{pedidoBean.salvar}"
+						update=":mensagem :formCardapio:tabelaCesta :formCardapio:painelFinalizacao"
+						oncomplete="PF('dlgPedi').hide();" />
+					<p:commandButton value="Fechar" oncomplete="PF(`dlgPedi`).hide();" />
+				</h:panelGrid>
+			</h:form>
+
+		</p:dialog>
+	</ui:define>
+</ui:composition>

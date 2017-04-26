@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Funcionarios</title>
+	<!-- chama o codigo java scripts do calendario pra traduzir -->
+	<h:outputScript library="js" name="scripts.js" />
+</h:head>
+<ui:define name="conteudo">
+	
+	<h:form id="formListagem">
+
+		<p:panel header="Lista de Funcionarios">
+			<p:dataTable id="tabela" emptyMessage="Lista sem registro"
+				paginator="true" value="#{funcionarioBean.funcionarios}"
+				var="fucionario" rows="4" paginatorPosition="top">
+				<f:facet name="header">
+					<p:commandButton value="Novo"
+						actionListener="#{funcionarioBean.novo}"
+						update=":mensagem :formcad:painel"
+						oncomplete="PF('dlgFunc').show();" />
+				</f:facet>
+				<p:column headerText="Nome" filterBy="#{fucionario.pessoa.nome}">
+					<h:outputText value="#{fucionario.pessoa.nome}" />
+				</p:column>
+
+				<p:column headerText="CPF">
+					<h:outputText value="#{fucionario.pessoa.cpf}" />
+				</p:column>
+
+				<p:column headerText="Data de admissão">
+					<h:outputText value="#{fucionario.dataAdmissao}">
+						<f:convertDateTime locale="pt_BR" />
+					</h:outputText>
+				</p:column>
+
+
+
+				<p:column headerText="Opcões">
+					<p:commandButton icon="ui-icon-trash"
+						actionListener="#{funcionarioBean.excluir}"
+						title="EXCLUIR"
+						update=":mensagem :formListagem:tabela">
+						<p:confirm header="Confirmação"
+							message="Tem certeza que deseja excluir?" icon="ui-icon-alert" />
+							<!-- a lina a baixo serve para enformar qual linha estou selecionado para a exclusao -->
+						<f:attribute name="funcionarioSelecionado" value="#{fucionario}" />
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+
+					</p:commandButton>
+
+					<p:commandButton icon="ui-icon-pencil"
+						actionListener="#{funcionarioBean.editar}" title="EDITAR"
+						update=":mensagem :formcad:painel"
+						oncomplete="PF('dlgFunc').show();">
+						<!-- a lina a baixo serve para enformar qual linha estou selecionado para a edissao -->
+						<f:attribute name="funcionarioSelecionado" value="#{fucionario}" />
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+
+					</p:commandButton>
+
+				</p:column>
+			</p:dataTable>
+			<p:confirmDialog global="true">
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+		</p:panel>
+	</h:form>
+
+	<p:dialog header="Cadastrar Funcionarios" widgetVar="dlgFunc"
+		draggable="false" resizable="false" modal="true">
+		<h:form id="formcad">
+			<h:panelGrid id="painel" columns="2">
+
+
+				<p:outputLabel for="pessoa" value="Pessoa:" />
+				<p:selectOneMenu id="pessoa" filter="true"
+					value="#{funcionarioBean.funcionario.pessoa}" required="true"
+					requiredMessage="O campo 'Pessoa' é obrigatório"
+					converter="omnifaces.SelectItemsConverter">
+					<f:selectItem noSelectionOption="true"
+						itemLabel="Selecione uma pessoa" />
+					<f:selectItems value="#{funcionarioBean.pessoas}" var="pessoa"
+						itemValue="#{pessoa}" itemLabel="#{pessoa.nome} - #{pessoa.cpf}" />
+
+				</p:selectOneMenu>
+
+				<p:outputLabel for="rgs" value="Registro:" />
+				<p:inputText id="rgs" maxlength="19" size="19"
+					value="#{funcionarioBean.funcionario.registro}"
+					required="true"
+					requiredMessage="O campo 'Registro:' é obrigatorio" >
+					
+					</p:inputText>
+
+				<p:outputLabel for="data" value="Data de admissão:" />
+				<p:calendar id="data"
+					value="#{funcionarioBean.funcionario.dataAdmissao}" required="true"
+					requiredMessage="O campo 'Data de admissão:' é obirgatório"
+					locale="pt_BR" />
+
+			</h:panelGrid>
+			<h:panelGrid columns="2">
+
+				<p:commandButton value="Salvar"
+					actionListener="#{funcionarioBean.salvar}"
+					update=":mensagem :formListagem:tabela :formcad:painel" />
+				<p:commandButton value="Fechar" oncomplete="PF(`dlgFunc`).hide();" />
+			</h:panelGrid>
+		</h:form>
+
+	</p:dialog>
+</ui:define>
+</ui:composition>

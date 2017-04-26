@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+	<session-factory>
+
+		<!-- Configurações de conexão com o banco -->
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="connection.url">jdbc:mysql://127.0.0.1:3306/sisnutricao</property>
+		<property name="connection.username">root</property>
+		<property name="connection.password">1234</property>
+
+		<!-- Pool de conxões) -->
+		<property name="connection.pool_size">1</property>
+
+		<!-- Dialeto SQL -->
+		<property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+
+		<!-- Gerenciamento do contexto das sessoes -->
+		<property name="current_session_context_class">thread</property>
+
+		<!-- Cache de segundo nível -->
+		<property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
+
+		<!-- Mostra as SQL geradas -->
+		<property name="show_sql">true</property>
+
+		<!-- Cria as tabelas no banco -->
+		<property name="hbm2ddl.auto">valedate</property>
+
+		<mapping class="com.hol.nutricao.domain.Clinica" />
+		<mapping class="com.hol.nutricao.domain.Enfermaria" />
+		<mapping class="com.hol.nutricao.domain.Dieta" />
+<!-- 		<mapping class="com.hol.nutricao.domain.VariacaoDieta" /> -->
+		<mapping class="com.hol.nutricao.domain.Pessoa" />
+		<mapping class="com.hol.nutricao.domain.Paciente" />
+		<mapping class="com.hol.nutricao.domain.Funcionario" />
+		<mapping class="com.hol.nutricao.domain.Usuario" />
+		<mapping class="com.hol.nutricao.domain.Pedido" />
+		<mapping class="com.hol.nutricao.domain.Cardapio" />
+		<mapping class="com.hol.nutricao.domain.ItemPedido" />
+		
+		
+		<!-- <mapping class = "com.jr.farmacia.domain.Produto"cardapio /> -->
+		<!-- <mapping class = "com.jr.farmacia.domain.Cliente" paciente/> -->
+		<!-- <mapping class = "com.jr.farmacia.domain.Fabricante" dieta/> -->
+		<!-- <mapping class = "com.jr.farmacia.domain.Funcionario" /> -->
+		<!-- <mapping class = "com.jr.farmacia.domain.Usuario" /> -->
+		<!-- <mapping class = "com.jr.farmacia.domain.Venda" pedido de refeicoa/> -->
+		<!-- <mapping class = "com.jr.farmacia.domain.ItemVenda" /> -->
+
+	</session-factory>
+
+</hibernate-configuration>

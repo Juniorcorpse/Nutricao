@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Dietas</title>
+	</h:head>
+	<ui:define name="conteudo">
+
+		<h:form id="formListagem">
+
+			<p:panel header="Lista de Dietas">
+				<p:dataTable id="tabela" emptyMessage="Lista sem registro"
+					paginator="true" value="#{dietaBean.dietas}" var="dietacurs"
+					rows="4" paginatorPosition="top">
+					<f:facet name="header">
+						<p:commandButton value="Novo" oncomplete="PF('dlgDiet').show();"
+							actionListener="#{dietaBean.novo}"
+							update=":mensagem :frmcad:paincad">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+					</f:facet>
+					<p:column headerText="Descrição" sortBy="#{dietacurs.descricao}"
+						filterBy="#{dietacurs.descricao}">
+						<h:outputText value="#{dietacurs.descricao}" />
+					</p:column>
+
+					<p:column headerText="Codigo" sortBy="#{dietacurs.codigodiet}"
+						filterBy="#{dietacurs.codigodiet}">
+						<h:outputText value="#{dietacurs.codigodiet}" />
+					</p:column>
+
+
+					<p:column headerText="Opções">
+						<p:commandButton icon="ui-icon-trash"
+							actionListener="#{dietaBean.excluir}"
+							update="mensagem :formListagem:tabela">
+							<p:confirm header="Confirmação"
+								message="Tem certeza que deseja excluir?" icon="ui-icon-alert" />
+							<f:attribute name="dietaSelecionada" value="#{dietacurs}" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-pencil"
+							actionListener="#{dietaBean.editar}"
+							update=":mensagem :frmcad:paincad"
+							oncomplete="PF('dlgDiet').show();">
+							<f:attribute name="dietaSelecionada" value="#{dietacurs}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+				<p:confirmDialog global="true">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+
+				</p:confirmDialog>
+			</p:panel>
+		</h:form>
+
+		<p:dialog header="Cadastrar Dietas" widgetVar="dlgDiet"
+			draggable="false" resizable="false" modal="true">
+			<h:form id="frmcad">
+				<h:panelGrid id="paincad" columns="2">
+					<p:outputLabel for="desc" value="Descrição:" />
+					<p:inputText id="desc" maxlength="50" size="25"
+						value="#{dietaBean.dieta.descricao}" required="true"
+						requiredMessage="O campo 'Descrição' é obrigatorio" />
+
+					<p:outputLabel for="cod" value="Codigo da Dieta:" />
+					<p:inputText id="cod" maxlength="50" size="25"
+						value="#{dietaBean.dieta.codigodiet}" required="true"
+						requiredMessage="O campo 'Codigo da Dieta' é obrigatorio" />
+
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+
+					<p:commandButton value="Salvar"
+						actionListener="#{dietaBean.salvar}"
+						update=":mensagem :frmcad:paincad :formListagem:tabela" />
+					<p:commandButton value="Fechar" oncomplete="PF(`dlgDiet`).hide();" />
+				</h:panelGrid>
+			</h:form>
+
+		</p:dialog>
+	</ui:define>
+</ui:composition>
