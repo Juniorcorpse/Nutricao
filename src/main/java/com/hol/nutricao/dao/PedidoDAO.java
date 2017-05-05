@@ -10,7 +10,7 @@ import com.hol.nutricao.domain.Pedido;
 import com.hol.nutricao.uitl.HibernateUtil;
 
 public class PedidoDAO extends GenericDAO<Pedido>{
-	public void savar(Pedido pedido, List<ItemPedido> itensPedido){
+	public void salvar(Pedido pedido, List<ItemPedido> itensPedido){
 		Session sessao = HibernateUtil.getFabricadesessoes().openSession();
 		Transaction transacao = null;
 		try {

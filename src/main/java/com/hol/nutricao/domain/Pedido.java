@@ -1,11 +1,14 @@
 package com.hol.nutricao.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -27,6 +30,9 @@ public class Pedido extends GenericDomain{
 	@ManyToOne
 	@JoinColumn(nullable= false)
 	private Funcionario funcionario;
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "pedido")
+	private List<ItemPedido> itensPedido;
 
 	public Date getHorario() {
 		return horario;
@@ -58,6 +64,14 @@ public class Pedido extends GenericDomain{
 
 	public void setFuncionario(Funcionario funcionario) {
 		this.funcionario = funcionario;
+	}
+	
+	public List<ItemPedido> getItensPedido() {
+		return itensPedido;
+	}
+	
+	public void setItensPedido(List<ItemPedido> itensPedido) {
+		this.itensPedido = itensPedido;
 	}
 
 	@Override
