@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
@@ -100,8 +101,8 @@ public class PedidoBean implements Serializable {
 		this.funcionarios = funcionarios;
 	}
 
-	
-	public void listar() {//novo
+	@PostConstruct
+	public void listar() {
 		try {
 			pedido = new Pedido();
 			pedido.setQuantidadeTotal(new Short("0"));
@@ -118,7 +119,7 @@ public class PedidoBean implements Serializable {
 		}
 
 	}
-	
+	@PostConstruct
 	public void pedidoDiaListar() {
 		try {
 			PedidoDAO pedidoDAO = new PedidoDAO();
@@ -159,7 +160,12 @@ public class PedidoBean implements Serializable {
 			itemPedido.setQuantidade(new Short("1"));
 
 			itensPedido.add(itemPedido);
-		} 	calcular();
+		} // else{
+			// ItemPedido itemPedido = itensPedido.get(achou);
+			// itemPedido.setQuantidade(new
+			// Short(itemPedido.getQuantidade()+1+""));
+			// }
+			calcular();
 
 	}
 
@@ -172,7 +178,17 @@ public class PedidoBean implements Serializable {
 				achou = posicao;
 			}
 		}
-		
+		// if(achou > -1 && itemVenda.getQuantidade() > 1){//pra remover um por
+		// um das quantidades
+		// itemVenda.setQuantidade(new Short(itemVenda.getQuantidade() - 1 +
+		// ""));
+		// itemVenda.setValorParcial(itemVenda.getValorParcial().subtract(itemVenda.getProduto().getPreco()));
+		//
+		// } else{
+		// itensVenda.remove(achou);
+		// }
+		//
+		// }﻿
 
 		if (achou > -1) {
 			itensPedido.remove(achou);
@@ -185,7 +201,7 @@ public class PedidoBean implements Serializable {
 		pedido.setQuantidadeTotal(new Short("0"));
 		for (int posicao = 0; posicao < itensPedido.size(); posicao++) {
 			ItemPedido itemPedido = itensPedido.get(posicao);
-			pedido.setQuantidadeTotal(new Short ((pedido.getQuantidadeTotal()+itemPedido.getQuantidade())+""));
+			pedido.setQuantidadeTotal((short) (pedido.getQuantidadeTotal()+(itemPedido.getQuantidade())));
 		}
 	}
 
@@ -212,7 +228,7 @@ public class PedidoBean implements Serializable {
 				return;
 			}
 			PedidoDAO pedidoDAO = new PedidoDAO();
-			pedidoDAO.salvar(pedido, itensPedido);
+			pedidoDAO.savar(pedido, itensPedido);
 
 			listar();
 

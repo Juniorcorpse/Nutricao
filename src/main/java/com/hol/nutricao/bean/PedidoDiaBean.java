@@ -6,7 +6,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.event.ActionEvent;
 
 import org.omnifaces.util.Messages;
 
@@ -94,8 +93,8 @@ public class PedidoDiaBean implements Serializable {
 	@PostConstruct
 	public void pedidoDiaListar() {
 		try {
-			PedidoDAO pedidoDAO = new PedidoDAO();
-			pedidos = pedidoDAO.listar();
+			ItemPedidoDAO itemPedidoDAO = new ItemPedidoDAO();
+			itensPedido = itemPedidoDAO.listar();
 //			pedido = new Pedido();
 //			pedido.setQuantidadeTotal(new Short("0"));
 //
@@ -111,28 +110,8 @@ public class PedidoDiaBean implements Serializable {
 		}
 
 	}
-	
-	public void editar(ActionEvent evento){
-		try {
-			pedido = (Pedido) evento.getComponent().getAttributes().get("pedidoSelecionado");
-			
-			PedidoDAO pedidoDAO = new PedidoDAO();
-			pedidos = pedidoDAO.listar("horario");
-			
-			
-			
-			ItemPedidoDAO itemPedidoDAO = new ItemPedidoDAO();
-			itensPedido = itemPedidoDAO.listar();
 
-				
-			
-		} catch (RuntimeException erro) {
-			Messages.addFlashGlobalError("Erro ao tentar editar um pedido");
-			erro.printStackTrace();
 
-		}
-
-		}
 //	public void adicionar(ActionEvent evento) {
 //
 //		Dieta dieta = (Dieta) evento.getComponent().getAttributes().get("dietaSelecionada");
