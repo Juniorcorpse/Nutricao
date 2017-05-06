@@ -10,7 +10,6 @@ import javax.faces.bean.ViewScoped;
 import org.omnifaces.util.Messages;
 
 import com.hol.nutricao.dao.ItemPedidoDAO;
-import com.hol.nutricao.dao.PedidoDAO;
 import com.hol.nutricao.domain.Cardapio;
 import com.hol.nutricao.domain.Dieta;
 import com.hol.nutricao.domain.Funcionario;

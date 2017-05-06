@@ -29,7 +29,7 @@
 		<property name="show_sql">true</property>
 
 		<!-- Cria as tabelas no banco -->
-		<property name="hbm2ddl.auto">valedate</property>
+		<property name="hbm2ddl.auto">update</property>
 
 		<mapping class="com.hol.nutricao.domain.Clinica" />
 		<mapping class="com.hol.nutricao.domain.Enfermaria" />

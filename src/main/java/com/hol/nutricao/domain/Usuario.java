@@ -12,6 +12,9 @@ public class Usuario extends GenericDomain {
 
 	@Column(length = 32, nullable = false)//usando md5 de tamanho 32
 	private String senha;
+	
+	@Transient
+	private String senhaSemCripritografia;
 
 	@Column(nullable = false)
 	private Character tipo;
@@ -29,6 +32,15 @@ public class Usuario extends GenericDomain {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+	
+	
+	public String getSenhaSemCripritografia() {
+		return senhaSemCripritografia;
+	}
+
+	public void setSenhaSemCripritografia(String senhaSemCripritografia) {
+		this.senhaSemCripritografia = senhaSemCripritografia;
 	}
 
 	public Character getTipo() {

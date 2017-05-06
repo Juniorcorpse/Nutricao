@@ -5,6 +5,7 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.hol.nutricao.domain.Dieta;
 import com.hol.nutricao.domain.ItemPedido;
 import com.hol.nutricao.domain.Pedido;
 
@@ -64,14 +65,14 @@ public class ItemPedidoDAOTest {
 	public void editar(){
 		
 		Long codigo = 1L;
-//		Long codigoCard = 2L;
-//		
-//		CardapioDAO cardapioDAO = new CardapioDAO();
-		//Cardapio cardapio = cardapioDAO.buscar(codigoCard);
+		Long codigoDieta = 2L;
+		
+		DietaDAO dietaDAO = new DietaDAO();
+		Dieta dieta = dietaDAO.buscar(codigoDieta);
 		
 		ItemPedidoDAO itemPedidoDAO = new ItemPedidoDAO();
 		ItemPedido itemPedido = itemPedidoDAO.buscar(codigo);
-		//itemPedido.setCardapio(cardapio);
+		itemPedido.setDieta(dieta);
 		
 		itemPedidoDAO.editar(itemPedido);
 	}

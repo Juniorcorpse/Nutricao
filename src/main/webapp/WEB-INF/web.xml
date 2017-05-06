@@ -7,6 +7,10 @@
 	<!-- Nome da Aplicação -->
 	<display-name>Nutricao</display-name>
 	
+	<!-- Pagina principal -->
+	<welcome-file-list>
+	<welcome-file>pages/index.xhtml</welcome-file>
+	</welcome-file-list>
 	<!-- Estágio do Projeto -->
 	<context-param>
 		<param-name>javax.faces.PROJECT_STAGE</param-name>
