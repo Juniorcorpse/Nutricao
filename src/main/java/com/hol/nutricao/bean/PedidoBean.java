@@ -33,6 +33,7 @@ public class PedidoBean implements Serializable {
 	private List<Cardapio> cardapios;
 	private List<Dieta> dietas;
 	private List<VariacaoDieta> variacoes;
+	private ItemPedido itemPedido;
 	private List<ItemPedido> itensPedido;
 	private List<Paciente> pacientes;
 	private List<Funcionario> funcionarios;
@@ -52,6 +53,8 @@ public class PedidoBean implements Serializable {
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
 	}
+	
+
 
 	public List<Cardapio> getCardapios() {
 		return cardapios;
@@ -75,6 +78,15 @@ public class PedidoBean implements Serializable {
 
 	public void setCardapios(List<Cardapio> cardapios) {
 		this.cardapios = cardapios;
+	}
+	
+	
+	public ItemPedido getItemPedido() {
+		return itemPedido;
+	}
+
+	public void setItemPedido(ItemPedido itemPedido) {
+		this.itemPedido = itemPedido;
 	}
 
 	public List<ItemPedido> getItensPedido() {
@@ -228,7 +240,26 @@ public class PedidoBean implements Serializable {
 				return;
 			}
 			PedidoDAO pedidoDAO = new PedidoDAO();
-			pedidoDAO.savar(pedido, itensPedido);
+			pedidoDAO.salvar(pedido, itensPedido);
+
+			listar();
+
+			Messages.addGlobalInfo("Pedido realizada com sucesso");
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Ocorreu um erro ao tentar salvar o pedido");
+			erro.printStackTrace();
+		}
+	}
+	
+	public void editar(ActionEvent evento) {
+		try {
+			itemPedido = (ItemPedido) evento.getComponent().getAttributes().get("pedidoSelecionada");
+//			if (pedido.getQuantidadeTotal() == 0) {
+//				Messages.addGlobalError("Informe pelo menos um item para o pedido");
+//				return;
+//			}
+			PedidoDAO pedidoDAO = new PedidoDAO();
+			pedidoDAO.editar(pedido, itensPedido);
 
 			listar();
 

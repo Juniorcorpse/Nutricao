@@ -21,6 +21,7 @@
 				styleClass="imagemCentralizada" />
 					
 				<center><h1>Sistema de Nutrição e Dieta Hospitalar</h1></center>
+				<h:outputText value="Usuário:  #{autenticacaoBean.usuarioLogado.pessoa.nome}" />
 				
 		</h:form>
 		</div>
@@ -29,7 +30,7 @@
 			<h:form id="formMenu" >
 				<p:menubar>
 					<p:submenu label="Aquivo">
-						<p:menuitem value="Sair" />
+						<p:menuitem value="Sair #{autenticacaoBean.deslogar}" />
 					</p:submenu>
 
 					<p:submenu label="Cadastros">
