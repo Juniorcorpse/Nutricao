@@ -1,10 +1,12 @@
 package com.hol.nutricao.bean;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.servlet.http.HttpSession;
 
 import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
@@ -56,11 +58,20 @@ public class AutenticacaoBean {
 		}
 	}
 	
-//	public void deslogar() {
-//		HttpSession autentica = Faces.getSession();
-//		  autentica.invalidate();
-//		  Faces.navigate("/pages/autenticacao.xhtml");// <--- navegar para sua tela de login 
-//		
-//	}
+	public boolean temPermissoes(List<String> permissoes){
+		for(String permissao : permissoes){
+			if(usuarioLogado.getTipo() == permissao.charAt(0)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void deslogar() {
+		HttpSession autentica = Faces.getSession();
+		  autentica.invalidate();
+		  Faces.navigate("/pages/autenticacao.xhtml");// <--- navegar para sua tela de login 
+		
+	}
 
 }

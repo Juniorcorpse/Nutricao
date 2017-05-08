@@ -12,9 +12,9 @@ import com.hol.nutricao.domain.Usuario;
 public class UsuarioDAOTest {
 	//todos os metodos testados
 	@Test
-	@Ignore
+	
 	public void salvar(){
-		Long codigo = 3L;
+		Long codigo = 4L;
 		PessoaDAO pessoaDAO = new PessoaDAO();
 		Pessoa pessoa = pessoaDAO.buscar(codigo);
 		System.out.println(pessoa.getNome());
@@ -24,18 +24,19 @@ public class UsuarioDAOTest {
 		Usuario usuario = new Usuario();
 		usuario.setAtivo(true);
 		usuario.setPessoa(pessoa);
-		usuario.setSenhaSemCripritografia("1234");
+		usuario.setSenhaSemCripritografia("123456");
 		
 		SimpleHash hash = new SimpleHash("md5", usuario.getSenhaSemCripritografia());
 		usuario.setSenha(hash.toHex());
 		
-		usuario.setTipo('N');
+		usuario.setTipo('G');
 		
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		usuarioDAO.salvar(usuario);
 	}
 	
 	@Test
+	@Ignore
 	public void autenticar(){
 		String cpf = "454.654.656-76";
 		String senha = "1234";

@@ -30,10 +30,10 @@
 			<h:form id="formMenu" >
 				<p:menubar>
 					<p:submenu label="Aquivo">
-						<p:menuitem value="Sair #{autenticacaoBean.deslogar}" />
+						<p:menuitem value="Sair" action="#{autenticacaoBean.deslogar}" />
 					</p:submenu>
 
-					<p:submenu label="Cadastros">
+					<p:submenu label="Cadastros" rendered="#{autenticacaoBean.temPermissoes(['A', 'N'])}">
 						<p:menuitem value="Clínica" url="/pages/clinicas.xhtml"/>
 						<p:menuitem value="Enfermaria" url="/pages/enfermarias.xhtml" />
 						<p:menuitem value="Pessoa" url="/pages/pessoas.xhtml"/>
@@ -45,7 +45,7 @@
 					</p:submenu>
 
 					<p:submenu label="Administração de Dietas">
-						<p:menuitem value="Pedido" url="/pages/pedidos.xhtml"/>
+						<p:menuitem value="Pedido" url="/pages/pedidos.xhtml" rendered="#{autenticacaoBean.temPermissoes(['A', 'N'])}"/>
 						<p:menuitem value="Pedidos do dia" url="/pages/pedidosdodia.xhtml"/>
 					</p:submenu>
 
