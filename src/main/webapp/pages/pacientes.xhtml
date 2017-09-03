@@ -10,16 +10,17 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Pacientes</title>
 		<!-- chama o codigo java scripts do calendario pra traduzir -->
-		<h:outputScript library="js" name="scripts.js" />
+<!-- 		<h:outputScript name="scripts.js" library="library/js"/> -->
 	</h:head>
 	<ui:define name="conteudo">
 
 		<h:form id="formListagem">
 
 			<p:panel header="Lista de Pacientes">
-				<p:dataTable id="tabela" emptyMessage="Lista sem registro"
-					paginator="true" value="#{pacienteBean.pacientes}" var="paciente"
-					rows="5" paginatorPosition="top">
+				<p:dataTable id="tabela" widgetVar="tabela"
+					emptyMessage="Lista sem registro" paginator="true"
+					value="#{pacienteBean.pacientes}" var="paciente" rows="5"
+					paginatorPosition="top" resizableColumns="true" >
 					<f:facet name="header">
 						<p:commandButton value="Novo"
 							actionListener="#{pacienteBean.novo}"
@@ -39,19 +40,22 @@
 						<h:outputText value="#{paciente.pessoa.nome}" />
 					</p:column>
 
-					<p:column headerText="Data de Nascimento" width="85">
-						<h:outputText value="#{paciente.dataNacimento}">
-							<f:convertDateTime locale="pt_BR" />
-						</h:outputText>
-					</p:column>
+<!-- 					<p:column headerText="Data de Nascimento" width="85"> -->
+<!-- 						<h:outputText value="#{paciente.dataNacimento}"> -->
+<!-- 							<f:convertDateTime locale="pt_BR" /> -->
+<!-- 						</h:outputText> -->
+<!-- 					</p:column> -->
 
-					<p:column headerText="Data de Admissão" width="89">
-						<h:outputText value="#{paciente.dataAdmissao}">
-							<f:convertDateTime locale="pt_BR" />
-						</h:outputText>
-					</p:column>
-
-					<p:column headerText="Internado" width="75">
+					<p:column headerText="Internado" width="155"
+						filterBy="#{paciente.internadoFormatado}">
+						<f:facet name="filter">
+						<p:selectOneButton onchange="PF('tabela').filter()">
+						
+						<f:selectItem itemValue="" itemLabel="Todos"/>
+						<f:selectItem itemValue="Sim" itemLabel="Sim"/>
+						<f:selectItem itemValue="De alta" itemLabel="De alta"/>
+						</p:selectOneButton>
+						</f:facet>
 						<h:outputText value="#{paciente.internadoFormatado}" />
 					</p:column>
 
@@ -64,18 +68,18 @@
 					<p:column headerText="Enfermaira">
 						<h:outputText value="#{paciente.enfermaria.numero}" />
 					</p:column>
-					
-					<p:column headerText="Leito">
+
+					<p:column headerText="Leito" width="59">
 						<h:outputText value="#{paciente.leito}" />
 					</p:column>
-					
-					<p:column headerText="Idade"> 
- 						<h:outputText value="#{paciente.idade}" /> 
- 					</p:column> 
-					
-					
 
-					<p:column headerText="Refeicão para acompanhente" width="85">
+					<p:column headerText="Idade" width="59">
+						<h:outputText value="#{paciente.idade}" />
+					</p:column>
+
+
+
+					<p:column headerText="Acompanhante" width="85">
 						<h:outputText value="#{paciente.acompanhateFormatado}"
 							disabled="true" />
 
@@ -136,16 +140,16 @@
 					</p:selectOneMenu>
 
 					<p:outputLabel for="dataN" value="Data de nascimento:" />
-					<p:calendar id="dataN"
+					<p:calendar id="dataN" 
 						value="#{pacienteBean.paciente.dataNacimento}" required="true"
 						requiredMessage="O campo 'Data de nascimento:' é obirgatório"
-						size="10" maxlength="10" locale="pt_BR" />
-						
+						size="10" maxlength="10" locale="pt" pattern="dd/MM/yyyy" showOn="button"/>
+
 					<p:outputLabel for="data" value="Data de admição:" />
-					<p:calendar id="data" value="#{pacienteBean.paciente.dataAdmissao}"
-						required="true"
+					<p:calendar id="data" showOn="button" value="#{pacienteBean.paciente.dataAdmissao}"
+						required="true" 
 						requiredMessage="O campo 'Data de admissão:' é obirgatório"
-						size="10" maxlength="10" locale="pt_BR" />
+						size="10" maxlength="10" locale="pt" pattern="dd/MM/yyyy"/>
 
 					<p:outputLabel for="intern" value="Status:" />
 					<p:selectBooleanCheckbox id="intern"

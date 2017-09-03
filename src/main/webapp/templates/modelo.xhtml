@@ -9,6 +9,35 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>SisNutriD</title>
 	<h:outputStylesheet library="css" name="estilos.css" />
+	<script>
+            PrimeFaces.locales['pt'] = {
+                closeText: 'Fechar',
+                prevText: 'Anterior',
+                nextText: 'Próximo',
+                currentText: 'Começo',
+                monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+                dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+                dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+                weekHeader: 'Semana',
+                firstDay: 0,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                timeOnlyTitle: 'Só Horas',
+                timeText: 'Tempo',
+                hourText: 'Hora',
+                minuteText: 'Minuto',
+                secondText: 'Segundo',
+                ampm: false,
+                month: 'Mês',
+                week: 'Semana',
+                day: 'Dia',
+                allDayText: 'Todo o Dia'
+            };
+        </script>
+	
 </h:head>
 <h:body>
 	<!-- pra esibir mensagens -->
@@ -33,7 +62,7 @@
 						<p:menuitem value="Sair" action="#{autenticacaoBean.deslogar}" />
 					</p:submenu>
 
-					<p:submenu label="Cadastros" rendered="#{autenticacaoBean.temPermissoes(['A', 'N'])}">
+					<p:submenu label="Cadastros" rendered="#{autenticacaoBean.temPermissoes(['A', 'N'])}"> 
 						<p:menuitem value="Clínica" url="/pages/clinicas.xhtml"/>
 						<p:menuitem value="Enfermaria" url="/pages/enfermarias.xhtml" />
 						<p:menuitem value="Pessoa" url="/pages/pessoas.xhtml"/>
@@ -41,7 +70,7 @@
 						<p:menuitem value="Cardápio" url="/pages/cardapios.xhtml"/>
 						<p:menuitem value="Paciente" url="/pages/pacientes.xhtml"/>
 						<p:menuitem value="Funcionário" url="/pages/funcionario.xhtml"/>
-						<p:menuitem value="Usuários" url="/pages/usuarios.xhtml"/>
+ 						<p:menuitem value="Usuários" url="/pages/usuarios.xhtml"/> 
 					</p:submenu>
 
 					<p:submenu label="Administração de Dietas">

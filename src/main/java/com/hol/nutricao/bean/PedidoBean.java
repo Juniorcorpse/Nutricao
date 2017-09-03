@@ -14,6 +14,7 @@ import org.omnifaces.util.Messages;
 
 import com.hol.nutricao.dao.DietaDAO;
 import com.hol.nutricao.dao.FuncionarioDAO;
+import com.hol.nutricao.dao.ItemPedidoDAO;
 import com.hol.nutricao.dao.PacienteDAO;
 import com.hol.nutricao.dao.PedidoDAO;
 import com.hol.nutricao.domain.Cardapio;
@@ -31,6 +32,7 @@ public class PedidoBean implements Serializable {
 	private Pedido pedido;
 	private List<Pedido> pedidos;
 	private List<Cardapio> cardapios;
+	private Dieta dieta;
 	private List<Dieta> dietas;
 	private List<VariacaoDieta> variacoes;
 	private ItemPedido itemPedido;
@@ -45,7 +47,7 @@ public class PedidoBean implements Serializable {
 	public void setPedido(Pedido pedido) {
 		this.pedido = pedido;
 	}
-	
+
 	public List<Pedido> getPedidos() {
 		return pedidos;
 	}
@@ -53,11 +55,17 @@ public class PedidoBean implements Serializable {
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
 	}
-	
-
 
 	public List<Cardapio> getCardapios() {
 		return cardapios;
+	}
+
+	public Dieta getDieta() {
+		return dieta;
+	}
+
+	public void setDieta(Dieta dieta) {
+		this.dieta = dieta;
 	}
 
 	public List<Dieta> getDietas() {
@@ -79,8 +87,7 @@ public class PedidoBean implements Serializable {
 	public void setCardapios(List<Cardapio> cardapios) {
 		this.cardapios = cardapios;
 	}
-	
-	
+
 	public ItemPedido getItemPedido() {
 		return itemPedido;
 	}
@@ -131,18 +138,19 @@ public class PedidoBean implements Serializable {
 		}
 
 	}
+
 	@PostConstruct
 	public void pedidoDiaListar() {
 		try {
 			PedidoDAO pedidoDAO = new PedidoDAO();
 			pedidos = pedidoDAO.listar("horario");
-//			pedido = new Pedido();
-//			pedido.setQuantidadeTotal(new Short("0"));
-//
-//			DietaDAO dietaDAO = new DietaDAO();
-//			dietas = dietaDAO.listar("descricao");
-//
-//			itensPedido = new ArrayList<>();
+			// pedido = new Pedido();
+			// pedido.setQuantidadeTotal(new Short("0"));
+			//
+			// DietaDAO dietaDAO = new DietaDAO();
+			// dietas = dietaDAO.listar("descricao");
+			//
+			// itensPedido = new ArrayList<>();
 
 		} catch (RuntimeException erro) {
 			Messages.addFlashGlobalError("Erro ao tentar listar tela de pedidos");
@@ -151,7 +159,6 @@ public class PedidoBean implements Serializable {
 		}
 
 	}
-
 
 	public void adicionar(ActionEvent evento) {
 
@@ -177,7 +184,7 @@ public class PedidoBean implements Serializable {
 			// itemPedido.setQuantidade(new
 			// Short(itemPedido.getQuantidade()+1+""));
 			// }
-			calcular();
+		calcular();
 
 	}
 
@@ -213,7 +220,7 @@ public class PedidoBean implements Serializable {
 		pedido.setQuantidadeTotal(new Short("0"));
 		for (int posicao = 0; posicao < itensPedido.size(); posicao++) {
 			ItemPedido itemPedido = itensPedido.get(posicao);
-			pedido.setQuantidadeTotal((short) (pedido.getQuantidadeTotal()+(itemPedido.getQuantidade())));
+			pedido.setQuantidadeTotal((short) (pedido.getQuantidadeTotal() + (itemPedido.getQuantidade())));
 		}
 	}
 
@@ -244,26 +251,22 @@ public class PedidoBean implements Serializable {
 
 			listar();
 
-			Messages.addGlobalInfo("Pedido realizada com sucesso");
+			Messages.addGlobalInfo("Pedido realizado com sucesso");
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar o pedido");
 			erro.printStackTrace();
 		}
 	}
-	
-	public void editar(ActionEvent evento) {
+
+	public void editarItem(ItemPedido itemPedido) {
 		try {
-			itemPedido = (ItemPedido) evento.getComponent().getAttributes().get("pedidoSelecionada");
-//			if (pedido.getQuantidadeTotal() == 0) {
-//				Messages.addGlobalError("Informe pelo menos um item para o pedido");
-//				return;
-//			}
-			PedidoDAO pedidoDAO = new PedidoDAO();
-			pedidoDAO.editar(pedido, itensPedido);
+			ItemPedidoDAO itemPedidoDAO = new ItemPedidoDAO();
+//			DietaDAO dietaDAO = new DietaDAO();
+//			dietaDAO.listar();
+//			itemPedido.setDieta(dieta);
+			itemPedidoDAO.editar(itemPedido);
 
-			listar();
-
-			Messages.addGlobalInfo("Pedido realizada com sucesso");
+			Messages.addGlobalInfo("Pedido realizado com sucesso");
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar o pedido");
 			erro.printStackTrace();

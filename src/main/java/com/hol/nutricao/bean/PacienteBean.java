@@ -180,6 +180,7 @@ public class PacienteBean implements Serializable {
 		}
 	}
 	
+	
 	public void popular() {
 		try {
 		if(clinica != null){

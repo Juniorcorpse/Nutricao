@@ -13,8 +13,8 @@ public class PessoaDAOTest {
 	@Ignore
 	public void salvar() {
 		Pessoa pessoa = new Pessoa();
-		pessoa.setNome("testexcluir");
-		pessoa.setCpf("123.030.103.30");
+		pessoa.setNome("jrsouza");
+		pessoa.setCpf("12312312312");
 		
 		PessoaDAO pessoaDAO = new PessoaDAO();
 		pessoaDAO.salvar(pessoa);
@@ -61,12 +61,12 @@ public class PessoaDAOTest {
 	@Test
 	//@Ignore
 	public void editar(){
-		Long codigo = 4L;
+		Long codigo = 1L;
 		PessoaDAO pessoaDAO = new PessoaDAO();
 		Pessoa pessoa = pessoaDAO.buscar(codigo);
 		
 		pessoa.setNome("fulanoeditado");
-				
+		pessoa.setCpf("123.123.123-12");	
 		pessoaDAO.editar(pessoa);
 	}
 

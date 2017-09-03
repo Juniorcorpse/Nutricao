@@ -86,7 +86,7 @@ public class Paciente extends GenericDomain {
 
         nascimento.add(Calendar.YEAR, idade);
 
-        // se a data de hoje é antes da data de Nascimento, então diminui 1.
+        // se a data de hoje é antes da data de Nascimento, então diminui 1. PRECISO MUDAR PRA UMA MENSAGEM DE ERRO - JRSOUZA
 
         if (dataAtual.before(nascimento)) {
 

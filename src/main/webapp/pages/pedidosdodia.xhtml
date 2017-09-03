@@ -19,8 +19,8 @@
 		<h:outputScript library="js" name="scripts.js" />
 	</h:head>
 	<ui:define name="conteudo">
-
-		<h:form id="formListagem">
+<p:growl autoUpdate="true"/>
+	<h:form id="formListagem">
 
 			<p:panel header="Lista de Pedidos do dia">
 				<p:dataTable id="tabela" emptyMessage="Lista sem registro"
@@ -49,38 +49,31 @@
 						filterBy="#{pedido.paciente.enfermaria.clinica.nome}">
 						<h:outputText value="#{pedido.paciente.enfermaria.clinica.nome}" />
 					</p:column>
-					<!-- 					<p:column headerText="Opções"> -->
-					<!-- 						<p:commandButton icon="ui-icon-pencil" -->
-					<!-- 							actionListener="#{pedidoDiaBean.editar}" title="EDITAR" -->
-					<!-- 							update=":mensagem :formcad:dieta" -->
-					<!-- 							oncomplete="PF('dlgEsq').show();"> -->
-					<!-- 							a lina a baixo serve para enformar qual linha estou selecionado para a edição -->
-					<!-- 							<f:attribute name="pedidoSelecionado" value="#{pedido}" /> -->
-					<!-- 							<f:actionListener -->
-					<!-- 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" /> -->
 
-
-					<!-- 						</p:commandButton> -->
-					<!-- 					</p:column> -->
-					<p:rowExpansion>
-						<p:dataTable emptyMessage="Lista sem registro"
-							value="#{pedido.itensPedido}" var="itemPedido" editable="true"
-							editMode="cell">
+					<p:rowExpansion id="rowitem">
+						<p:dataTable id="item" emptyMessage="Lista sem registro"
+							value="#{pedido.itensPedido}" var="itemPedido" editable="true">
+							<p:column style="width:32px">
+								<p:rowEditor />
+							</p:column>
 							<p:column headerText="Dieta">
 								<p:cellEditor>
 									<f:facet name="output">
 										<h:outputText value="#{itemPedido.dieta.descricao}" />
 									</f:facet>
 									<f:facet name="input">
-										<p:inputText value="#{dietas}" />
+									<h:selectOneMenu value="#{itemPedido.dieta.descricao}" style="width:100%">
+									<f:selectItems value="#{pedidoBean.dietas}" var="diet" itemValue="#{diet}" itemLabel="#{diet.descricao}"/>
+									
+									</h:selectOneMenu>
+<!-- 										<p:inputText value="#{itemPedido.dieta.descricao}" /> -->
 									</f:facet>
 								</p:cellEditor>
-								<!-- 							<h:outputText value="#{itemPedido.dieta.descricao}" /> -->
 							</p:column>
 
-							<p:column headerText="Opções">
+							
+							<p:ajax event="rowEdit" listener="#{pedidoBean.editarItem(itemPedido)}" />
 
-							</p:column>
 						</p:dataTable>
 					</p:rowExpansion>
 				</p:dataTable>

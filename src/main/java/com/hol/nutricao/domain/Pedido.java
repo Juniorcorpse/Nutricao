@@ -12,6 +12,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 @SuppressWarnings("serial")
 @Entity
 public class Pedido extends GenericDomain{
@@ -32,6 +35,7 @@ public class Pedido extends GenericDomain{
 	private Funcionario funcionario;
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "pedido")
+	 @Fetch(FetchMode.SUBSELECT)
 	private List<ItemPedido> itensPedido;
 
 	public Date getHorario() {

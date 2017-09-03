@@ -19,12 +19,12 @@
 				<p:outputLabel for="cpf" value="CPF:" />
 				<p:inputMask id="cpf" mask="999.999.999-99" size="15"
 					required="true" requiredMessage="Digite seu CPF"
-					value="#{autenticacaoBean.usuario.pessoa.cpf}" />
+					value="#{autenticacaoBean.usuario.pessoa.cpf}" title="Digite seu cpf"/>
 
 				<p:outputLabel for="senha" value="Senha" />
 				<p:password id="senha" maxlength="8" size="15" required="true"
 					requiredMessage="Digite sua SENHA"
-					value="#{autenticacaoBean.usuario.senha}" />
+					value="#{autenticacaoBean.usuario.senha}" placeholder="Sua senha"/>
 			</h:panelGrid>
 			<h:panelGrid columns="1">
 				<p:commandButton value="Entrar" update=":mensagem"
